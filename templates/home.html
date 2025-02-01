@@ -1,0 +1,821 @@
+{% block content %}
+<style>
+  :root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #f8f9fa;
+    --accent-color: #e63946;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --transition: all 0.3s ease;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+  }
+
+  .header {
+    background-color: var(--primary-color);
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+  }
+
+  .header.scrolled {
+    background-color: rgba(26, 26, 26, 0.9);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    color: var(--text-light);
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-icon {
+    margin-right: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: var(--transition);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("https://hips.hearstapps.com/hmg-prod/images/roa020122fea-herocar-010-1645034095.jpg?crop=0.873xw:0.656xh;0.0913xw,0.0986xh&resize=1200:*");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-light);
+    padding: 0 1rem;
+  }
+
+  .hero-content {
+    max-width: 800px;
+  }
+
+  .hero-title {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: fadeInUp 1s ease;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease 0.5s;
+    animation-fill-mode: both;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 5px;
+    transition: var(--transition);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn:hover {
+    background-color: #c1121f;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .featured-cars {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 0 1rem;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 1rem auto 0;
+  }
+
+  .car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .car-card {
+    background: var(--secondary-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+    position: relative;
+  }
+
+  .car-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .car-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+
+  .car-card:hover .car-image {
+    transform: scale(1.1);
+  }
+
+  .car-details {
+    padding: 1.5rem;
+  }
+
+  .car-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .car-price {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .car-specs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .spec {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+  }
+
+  .spec-icon {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .services {
+    background-color: var(--primary-color);
+    padding: 6rem 1rem;
+    color: var(--text-light);
+  }
+
+  .services-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+  }
+
+  .service-card {
+    text-align: center;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: var(--transition);
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .service-icon {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+  }
+
+  .testimonials {
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 0 1rem;
+  }
+
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .testimonial-card {
+    background-color: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .testimonial-text {
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .testimonial-author {
+    font-weight: bold;
+  }
+
+  footer {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 4rem 1rem;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .footer-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .footer-links {
+    list-style: none;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .footer-links a:hover {
+    color: var(--accent-color);
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .social-icons a {
+    color: var(--text-light);
+    transition: var(--transition);
+  }
+
+  .social-icons a:hover {
+    color: var(--accent-color);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 3rem;
+    }
+
+    .nav-links {
+      display: none;
+    }
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    background-color: #f0f0f0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .banner {
+    background: linear-gradient(135deg, red, black);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .banner h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+  }
+
+  .banner p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+
+  .discount-badge {
+    background-color: #ffeb3b;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+
+  .strip {
+    position: absolute;
+    background: #ffeb3b;
+    transform: rotate(-45deg);
+    padding: 5px 50px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    top: 25px;
+    left: -40px;
+  }
+
+  .car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .car-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .car-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .car-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .car-details {
+    padding: 15px;
+  }
+
+  .car-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+
+  .car-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .original-price {
+    text-decoration: line-through;
+    color: #999;
+  }
+
+  .discounted-price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ff1493;
+  }
+
+  .car-discount {
+    background-color: #ffeb3b;
+    color: #333;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+
+  @media (max-width: 768px) {
+    .banner h1 {
+      font-size: 2em;
+    }
+
+    .banner p {
+      font-size: 1em;
+    }
+
+    .car-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  form.d-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  form.d-flex input.form-control {
+    width: 400px;
+    height: 45px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  form.d-flex input.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  form.d-flex button.btn {
+    height: 45px;
+    padding: 0 20px;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  form.d-flex button.btn:hover {
+    background-color: #0056b3;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .like-btn {
+    padding: 5px 15px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .like-btn:hover {
+    background-color: #007bff;
+    color: white;
+  }
+</style>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1 class="hero-title">Experience Luxury on Wheels</h1>
+    <p class="hero-subtitle">
+      Discover our exclusive collection of premium vehicles
+    </p>
+    <a href="#inventory" class="btn btn-primary">Explore Our Inventory</a>
+  </div>
+</section>
+
+<div class="container">
+  <h1>Search bar</h1>
+  <form method="GET" action="" class="d-flex my-4" style="margin-bottom: 20px">
+    <input
+      type="text"
+      name="search"
+      class="form-control me-2"
+      placeholder="Search for a product..."
+      value="{{ search_query }}"
+    />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  <div class="banner">
+    <div class="strip">Winter Sale</div>
+    <h1>Winter Car Sale Extravaganza</h1>
+    <p>Massive discounts on our premium car selection!</p>
+    <span class="discount-badge">Up to 80% OFF</span>
+  </div>
+
+  <div class="car-grid">
+    {% for product in products %} {% if product.discount %}
+    <div class="car-card">
+      <img
+        src="{{ product.image.url }}"
+        alt="{{ product.name }}"
+        class="car-image"
+      />
+      <div class="car-details">
+        <h3 class="car-title">{{ product.name }}</h3>
+        <div class="car-price">
+          <span class="original-price">${{ product.price }}</span>
+          <span class="discounted-price">${{ product.get_price }}</span>
+
+          <span class="car-discount">-{{ product.discount }}%</span>
+        </div>
+        <a href="{% url 'product:details' id=product.id %}" class="btn"
+          >View Details</a
+        >
+      </div>
+    </div>
+    {% endif %} {% endfor %}
+  </div>
+</div>
+
+<section class="featured-cars" id="inventory">
+  <h2 class="section-title">Featured Vehicles</h2>
+  <div class="car-grid">
+    {% for product in products %}
+    <div class="car-card">
+      <img
+        src="{{ product.image.url }}"
+        alt="{{ product.name }}"
+        class="car-image"
+      />
+      <div class="car-details">
+        <h3 class="car-title">{{ product.name }}</h3>
+        <span class="car-price">
+          ${{ product.get_price }} {% if product.discount %}
+          <small><strike>${{ product.price }}</strike></small>
+          {% endif %}
+        </span>
+        <div class="car-specs">
+          <span class="spec"
+            ><span class="spec-icon">📍</span>{{ product.location }} mi</span
+          >
+          <span class="spec"
+            ><span class="spec-icon">🛢️</span>{{ product.fuel }}</span
+          >
+          <span class="spec"
+            ><span class="spec-icon">🏃</span>{{ product.acceleration }}
+            0-100</span
+          >
+          <span class="spec"
+            ><span class="spec-icon">⚙️</span>{{ product.transmission }}</span
+          >
+        </div>
+        <a href="{% url 'product:details' product.id %}" class="btn"
+          >View Details</a
+        >
+        <p>Likes: {{ product.likes }}</p>
+        <a href="?like={{ product.id }}" class="btn btn-outline-primary"
+          >❤️ Like</a
+        >
+        <p>
+          Average Rating: {{ product.get_average_rating|floatformat:1 }} / 5
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="services" id="services">
+  <h2 class="section-title">Our Services</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🚗</div>
+      <h3>Test Drive</h3>
+      <p>Experience the thrill of driving your dream car</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💰</div>
+      <h3>Financing</h3>
+      <p>Flexible financing options tailored to your needs</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Maintenance</h3>
+      <p>Expert maintenance and repair services</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔄</div>
+      <h3>Trade-In</h3>
+      <p>Get the best value for your current vehicle</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <h2 class="section-title">What Our Customers Say</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <p class="testimonial-text">
+        "Firava Cars provided an exceptional car buying experience. Their
+        attention to detail and customer service is unmatched."
+      </p>
+      <p class="testimonial-author">- John D.</p>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">
+        "I found my dream car at Firava Cars. The staff was knowledgeable and
+        made the process smooth and enjoyable."
+      </p>
+      <p class="testimonial-author">- Sarah M.</p>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">
+        "The quality of vehicles at Firava Cars is outstanding. I couldn't be
+        happier with my purchase."
+      </p>
+      <p class="testimonial-author">- Michael R.</p>
+    </div>
+  </div>
+</section>
+<script src="./layouts/index.js"></script>
+<script>
+  // Sample product data
+  const products = [
+    {
+      image: "/placeholder.svg?height=200&width=300",
+      title: "Зимняя куртка",
+      originalPrice: 15000,
+      discount: 70,
+    },
+    {
+      image: "/placeholder.svg?height=200&width=300",
+      title: "Зимние ботинки",
+      originalPrice: 8000,
+      discount: 60,
+    },
+    {
+      image: "/placeholder.svg?height=200&width=300",
+      title: "Тёплый шарф",
+      originalPrice: 3000,
+      discount: 50,
+    },
+    {
+      image: "/placeholder.svg?height=200&width=300",
+      title: "Зимние перчатки",
+      originalPrice: 2500,
+      discount: 65,
+    },
+    {
+      image: "/placeholder.svg?height=200&width=300",
+      title: "Тёплая шапка",
+      originalPrice: 2000,
+      discount: 55,
+    },
+    {
+      image: "/placeholder.svg?height=200&width=300",
+      title: "Зимний свитер",
+      originalPrice: 6000,
+      discount: 75,
+    },
+  ];
+
+  // Initialize products
+  const productsGrid = document.getElementById("productsGrid");
+  let currentPosition = 0;
+
+  // Create and append product cards
+  function createProductCards() {
+    productsGrid.innerHTML = products
+      .map((product) => {
+        const discountedPrice =
+          product.originalPrice * (1 - product.discount / 100);
+        return `
+                  <div class="product-card">
+                      <img src="${product.image}" alt="${
+          product.title
+        }" class="product-image">
+                      <h3 class="product-title">${product.title}</h3>
+                      <div class="product-price">
+                          <span class="original-price">${
+                            product.originalPrice
+                          }₽</span>
+                          <span class="discounted-price">${Math.round(
+                            discountedPrice
+                          )}₽</span>
+                          <span class="product-discount">-${
+                            product.discount
+                          }%</span>
+                      </div>
+                  </div>
+              `;
+      })
+      .join("");
+  }
+
+  // Slide functionality
+  function slideProducts(direction) {
+    const cardWidth = document.querySelector(".product-card").offsetWidth + 20; // Including gap
+    const visibleCards = Math.floor(productsGrid.offsetWidth / cardWidth);
+    const maxPosition = products.length - visibleCards;
+
+    if (direction === "next" && currentPosition < maxPosition) {
+      currentPosition++;
+    } else if (direction === "prev" && currentPosition > 0) {
+      currentPosition--;
+    }
+
+    productsGrid.style.transform = `translateX(-${
+      currentPosition * cardWidth
+    }px)`;
+  }
+
+  // Initialize the product grid
+  createProductCards();
+
+  // Responsive handling
+  window.addEventListener("resize", createProductCards);
+
+  document.querySelectorAll(".like-btn").forEach((button) => {
+    button.addEventListener("click", function () {
+      const carId = this.getAttribute("data-car-id");
+      const url = `/like-car/${carId}/`;
+
+      fetch(url, { method: "GET" })
+        .then((response) => response.json())
+        .then((data) => {
+          this.innerHTML = `❤️ Like (${data.likes})`; // Update like count
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+  });
+</script>
+{% endblock %}

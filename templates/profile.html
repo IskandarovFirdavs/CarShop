@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .profile-info {
+            margin-bottom: 1rem;
+        }
+        .profile-info label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .profile-info span {
+            display: block;
+            margin-bottom: 1rem;
+        }
+        button {
+            padding: 0.8rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Profile</h1>
+        <div class="profile-info">
+            <label>Username:</label>
+            <span id="username">{{ user.username }}</span>
+
+            <label>First_name:</label>
+            <span>{{ user.first_name }}</span>
+
+            <label>Last_name:</label>
+            <span>{{ user.last_name }}</span>
+        </div>
+        <a href="{% url 'users:logout' %}">Logout</a>
+    </div>
+</body>
+</html>
