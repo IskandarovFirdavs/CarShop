@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
+{% extends 'layouts/base.html' %}
+
+{% block extra_css %}
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e9ecef;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+          * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+  }
+
         .container {
             background: #fff;
             padding: 2rem;
@@ -22,7 +16,10 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
+            margin:100px 35%;
         }
+
+
         h1 {
             text-align: center;
             color: #333;
@@ -52,9 +49,10 @@
             background: #c82333;
         }
     </style>
-</head>
-<body>
-    <div class="container">
+{% endblock %}
+
+{% block content %}
+<div class="container">
         <h1>Profile</h1>
         <div class="profile-info">
             <label>Username:</label>
@@ -68,5 +66,4 @@
         </div>
         <a href="{% url 'users:logout' %}">Logout</a>
     </div>
-</body>
-</html>
+{% endblock %}

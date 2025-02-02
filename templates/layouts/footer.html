@@ -1,3 +1,52 @@
+{% block extra_css %}
+<style>
+  .footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  background-color: #333;
+  color: #fff;
+  padding: 40px 20px;
+}
+
+.footer-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.footer-section p, .footer-links li {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links li a:hover {
+  color: #e63946;
+}
+
+.social-icons a {
+  margin: 0 10px;
+  color: #fff;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #e63946;
+}
+</style>
+{% endblock %}
 <div class="footer-content">
   <div class="footer-section">
     <h3>Contact Us</h3>
