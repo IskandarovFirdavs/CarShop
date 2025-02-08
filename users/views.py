@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Permission
 from django.shortcuts import render, redirect
 
 from users.forms import RegistrationForm, LoginForm
@@ -11,8 +12,16 @@ def registration_view(request):
 
         if form.is_valid():
             user = form.save()
+
+            add_permission = Permission.objects.get(codename='add_carmodel', content_type__app_label='products')
+            change_permission = Permission.objects.get(codename='change_carmodel', content_type__app_label='products')
+
+            user.user_permissions.add(add_permission, change_permission)
+
             login(request, user)
             return redirect('users:profile')
+
+
 
     else:
         form = RegistrationForm()

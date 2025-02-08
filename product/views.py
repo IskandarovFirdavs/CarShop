@@ -1,16 +1,22 @@
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, get_object_or_404, redirect
-from product.models import CarModel, CommentModel   
+from product.models import CarModel, CommentModel
 from django.contrib import messages
+
 
 def home(request):
     products = CarModel.objects.order_by('-pk')[:3]
-    rating_range = range(1, 6) 
+    rating_range = range(1, 6)
     search_query = request.GET.get('search', '')
+    # def tags(request, tag_slug):
+    #     tag = get_object_or_404(Tag, slag=tag_slug)
+
+
     if search_query:
         products = CarModel.objects.filter(name__icontains=search_query)
 
-    if 'like' in request.GET:  
+    if 'like' in request.GET:
         car_id = request.GET.get('like')
         car = CarModel.objects.get(id=car_id)
         car.likes += 1
@@ -24,9 +30,11 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+
+@login_required()
 def details(request, id):
     product = get_object_or_404(CarModel, id=id)
-    comments = CommentModel.objects.filter(product=product)  
+    comments = CommentModel.objects.filter(product=product)
     rating_range = range(1, 6)
 
     if request.method == "POST":
@@ -35,8 +43,8 @@ def details(request, id):
 
         if comment_text and rating:
             try:
-                rating = int(rating)  
-                comment = CommentModel.objects.create(  
+                rating = int(rating)
+                comment = CommentModel.objects.create(
                     product=product,
                     name=request.user.username,
                     comment=comment_text,
