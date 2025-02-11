@@ -39,8 +39,8 @@ def details(request, id):
 
     if request.method == "POST":
         comment_text = request.POST.get("comment")
-        rating = request.POST.get("rating")
-
+        rating = request.POST.get('rating')
+ 
         if comment_text and rating:
             try:
                 rating = int(rating)

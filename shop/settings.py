@@ -1,4 +1,5 @@
 from pathlib import Path
+from decouple import config
 
 from django.conf.global_settings import STATICFILES_DIRS, MEDIA_URL, AUTH_USER_MODEL
 
@@ -9,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mhnq@s4wxkv8!3tfqzm#@sf)ximq5i^qcx^+h#o4k8fb)pbi2k'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -25,9 +26,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'product',
     'users',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -72,15 +76,6 @@ DATABASES = {
     }
 }
 
-
-
-try:
-    from settings_local import *
-finally:
-    pass
-
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -120,13 +115,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static/'
 
-STATICFILES_DIRS = BASE_DIR / 'assets/',
+STATICFILES_DIRS = [
+    BASE_DIR / 'assets',
+]
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+    },
+}
 
 AUTH_USER_MODEL = 'users.UserModel'
 
@@ -134,3 +138,8 @@ AUTH_USER_MODEL = 'users.UserModel'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+try:
+    from .settings_local import *
+finally:
+    pass

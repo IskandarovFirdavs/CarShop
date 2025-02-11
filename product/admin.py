@@ -15,6 +15,7 @@ class CarModelAdmin(admin.ModelAdmin):
     list_filter = ['color', 'price']
     ordering = ['color', 'location']
     inlines = [CommentInline]
+    readonly_fields = ['likes']
 
 
 @admin.register(CommentModel)

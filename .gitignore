@@ -36,7 +36,7 @@ MANIFEST
 *.db
 *.env
 *.venv
-.env/
+shop/.env/
 .venv/
 env/
 venv/
@@ -123,3 +123,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+.idea
+media
+static
+settings_local.py
